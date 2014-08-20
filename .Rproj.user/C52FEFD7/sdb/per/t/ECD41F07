@@ -1,0 +1,16 @@
+{
+    "contents" : "#  R package GRAD file R/glmTrainPhotoZ.R\n#  Copyright (C) 2014  Rafael S. de Souza\n#\n#This program is free software: you can redistribute it and/or modify\n#it under the terms of the GNU General Public License version 3 as published by\n#the Free Software Foundation.\n\n#This program is distributed in the hope that it will be useful,\n#but WITHOUT ANY WARRANTY; without even the implied warranty of\n#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n#GNU General Public License for more details.\n\n#  A copy of the GNU General Public License is available at\n#  http://www.r-project.org/Licenses/\n#\n#' @title Fit a GLM function in the training set  \n#' @param x  data.frame \n#' @return GLM object \n#' @import  arm COUNT quantreg\n#'@examples\n#'\n#' y <- rgamma(100,10,.1)\n#' summary(glm(y~1,family=Gamma))\n#'  \n#' @export \n#\n# A GLM fit for photo-z\n\nglmTrainPhotoZ <- function(x,formula=NULL, method=c(\"Frequentist\",\"Bayesian\"), family=c(\"gamma\",\"inverse.gaussian\")) {\n\n  # First some basic error control\n  if( ! (method %in% c(\"Frequentist\",\"Bayesian\"))) {\n    stop(\"Error in glmTrainPhotoZ :: the chosen method is not implemented.\")\n  } \n\n  if( ! (family %in% c(\"gamma\",\"inverse.gaussian\"))) {\n    stop(\"Error in TrainGLM :: the chosen family is not implemented.\")\n  }\n\n  if( ! is.data.frame(x) ) {\n    stop(\"Error in glmTrainPhotoZ :: x is not a data frame, and the code expects a data frame.\")\n  }\n\n  # Now, for the real work\n  ## Frequentist \n  if(method==\"Frequentist\"){\n    if(family==\"gamma\"){\n      GLM_data <- glm(formula=formula, family=Gamma(link = \"log\"), data=x) \n    }\n    if(family==\"inverse.gaussian\"){\n      GLM_data <- glm(formula=formula, family=inverse.gaussian(link = \"1/mu^2\"), data=x)\n    \n    }\n    \n   \n    \n  }\n  \n  ## Bayesian\n  if(method==\"Bayesian\"){    \n    if(family==\"gamma\"){\n      GLM_data <- bayesglm(formula=formula, family=Gamma(link=\"log\"), data=x)\n    }\n    if(family==\"inverse.gaussian\"){\n      GLM_data <- bayesglm(formula=formula, family=inverse.gaussian(link = \"1/mu^2\"), data=x)\n    }\n  }\n\n  # That's it folks!\n  # return(summary(GLM_data))\n  return(list(glmfit = GLM_data, Summary = summary(GLM_data),\n              AICn = modelfit(GLM_data)$AICn,\n              BICqh = modelfit(GLM_data)$BICqh))  \n}\n\n",
+    "created" : 1408443006727.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "133612722",
+    "id" : "ECD41F07",
+    "lastKnownWriteTime" : 1408456559,
+    "path" : "~/Dropbox/artigos/Meusartigos/IAA-WGC/Github/CosmoR/CosmoPhotoz/R/glmTrainPhotoz.R",
+    "project_path" : "R/glmTrainPhotoz.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

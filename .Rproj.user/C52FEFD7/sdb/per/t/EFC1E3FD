@@ -1,0 +1,16 @@
+{
+    "contents" : "Package: CosmoPhotoz\nType: Package\nTitle: Photometric Redshift estimation using GLMs\nVersion: 0.1\nDate: 2014-08-15\nAuthor: Rafael S. de Souza\nMaintainer: Rafael S. de Souza <rafael.2706@gmail.com>\nDescription: Set of functions for Photometric Redshift estimation\nDepends:\n    R (>= 3.0)\nLicense: GPL (>= 3)\nImports:\n    ggplot2,\n    COUNT,\n    ggthemes,\n    scales,\n    arm,\n    rrcovHD,\n    gridExtra,\n    quantreg\nNeedsCompilation: no\n",
+    "created" : 1408443437840.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1578701398",
+    "id" : "EFC1E3FD",
+    "lastKnownWriteTime" : 1408461408,
+    "path" : "~/Dropbox/artigos/Meusartigos/IAA-WGC/Github/CosmoR/CosmoPhotoz/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "dcf"
+}
