@@ -1,70 +1,147 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Cosmophotoz by RafaelSdeSouza</title>
+    <meta name="description" content="Cosmophotoz : ">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <title>Cosmophotoz</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header class="without-description">
-        <h1>Cosmophotoz</h1>
-        <p></p>
-        <p class="view"><a href="https://github.com/RafaelSdeSouza/CosmoPhotoz">View the Project on GitHub <small>RafaelSdeSouza/CosmoPhotoz</small></a></p>
-        <ul>
-          <li><a href="https://github.com/RafaelSdeSouza/CosmoPhotoz/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/RafaelSdeSouza/CosmoPhotoz/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/RafaelSdeSouza/CosmoPhotoz">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/RafaelSdeSouza/CosmoPhotoz">View on GitHub</a>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+          <h1 id="project_title">Cosmophotoz</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/RafaelSdeSouza/CosmoPhotoz/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/RafaelSdeSouza/CosmoPhotoz/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <hr><p>title: "Photometric Redshift with CosmoPhotoz"
+authors: Rafael S. de Souza, Jonny Elliot, Alberto Krone-Martins, Émille Ishida, Joseph
+  Hilbe
+output: html_document</p>
+
+<h2>
+<a name="runtime-shiny" class="anchor" href="#runtime-shiny"><span class="octicon octicon-link"></span></a>runtime: shiny</h2>
+
+<p>This is a short tutorial explaining how to perform photometric redshift estimation using the CosmoPhotoz R package.</p>
+
+<h1>
+<a name="required-libraries" class="anchor" href="#required-libraries"><span class="octicon octicon-link"></span></a>Required libraries</h1>
+
+<pre lang="r,results='hide',message=FALSE,"><code>require(CosmoPhotoz)
+require(ggplot2)
+
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>Load the PHAT0 data included in the package. Here we are using 5% of all dataset for training. </p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<div class="highlight highlight-r"><pre>data<span class="p">(</span>PHAT0train<span class="p">)</span>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+data<span class="p">(</span>PHAT0test<span class="p">)</span>
+</pre></div>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<div class="highlight highlight-r"><pre>PC_comb<span class="o">&lt;-</span>computeCombPCA<span class="p">(</span><span class="kp">subset</span><span class="p">(</span>PHAT0train<span class="p">,</span>select<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="o">-</span>redshift<span class="p">)),</span>
+                       <span class="kp">subset</span><span class="p">(</span>PHAT0test<span class="p">,</span>select<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="o">-</span>redshift<span class="p">)))</span>
+</pre></div>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Number of variance explained by each PC </p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<div class="highlight highlight-r"><pre>PC_comb<span class="o">$</span>PCsum
+</pre></div>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Add the redshift column to the PCA projections of the  Training sample</p>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<div class="highlight highlight-r"><pre>Trainpc<span class="o">&lt;-</span><span class="kp">cbind</span><span class="p">(</span>PC_comb<span class="o">$</span>x<span class="p">,</span>redshift<span class="o">=</span>PHAT0train<span class="o">$</span>redshift<span class="p">)</span>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+</pre></div>
+
+<p>Store the PCA projections for the testing sample in the vector Testpc</p>
+
+<pre lang="r,"><code>Testpc&lt;-PC_comb$y
+</code></pre>
+
+<p>Train  the glm model using Gamma Family. 6 PCs explain 99.5% of data variance. In order to account for small variations in the shape, we include a polynomial term for the 2 first PCs (95% of data variance) </p>
+
+<div class="highlight highlight-r"><pre>
+Fit<span class="o">&lt;-</span>glmTrainPhotoZ<span class="p">(</span>Trainpc<span class="p">,</span>formula<span class="o">=</span>redshift<span class="o">~</span>poly<span class="p">(</span>Comp.1<span class="p">,</span><span class="m">2</span><span class="p">)</span><span class="o">*</span>poly<span class="p">(</span>Comp.2<span class="p">,</span><span class="m">2</span><span class="p">)</span><span class="o">*</span>Comp.3<span class="o">*</span>Comp.4<span class="o">*</span>Comp.5<span class="o">*</span>Comp.6<span class="p">,</span>method<span class="o">=</span><span class="s">"Bayesian"</span><span class="p">,</span>family<span class="o">=</span><span class="s">"gamma"</span><span class="p">)</span>
+
+</pre></div>
+
+<p>Once we fit our GLM model, we can predict the redshift for the "photometric" sample</p>
+
+<pre lang="r,"><code>
+photoz&lt;-predict(Fit$glmfit,newdata = Testpc,type="response")
+
+</code></pre>
+
+<p>Store the redshift from the testing sample in the vector specz for comparison </p>
+
+<pre lang="r,"><code>specz&lt;-PHAT0test$redshift
+</code></pre>
+
+<p>Compute basic diagnostic statistics </p>
+
+<pre lang="r,"><code>computeDiagPhotoZ(photoz, specz)
+</code></pre>
+
+<p>Create basic diagnostic   plots</p>
+
+<p>Kernel density distribution of the full scatter 
+ $(specz-photoz)/(1+specz)$</p>
+
+<pre lang="r,fig.width=8,"><code>plotDiagPhotoZ(photoz, specz, type = "errordist")
+
+</code></pre>
+
+<p>Predicted vs Actuall values
+Select 15,000 points to show</p>
+
+<div class="highlight highlight-r"><pre>datashow<span class="o">&lt;-</span><span class="kp">sample</span><span class="p">(</span><span class="kp">length</span><span class="p">(</span>photoz<span class="p">),</span><span class="m">15000</span><span class="p">)</span>
+</pre></div>
+
+<pre lang="r,fig.width=8,"><code>plotDiagPhotoZ(photoz[datashow], specz[datashow], type = "predobs")+coord_cartesian(xlim =c(0,1.5), ylim = c(0,1.5))
+</code></pre>
+
+<p>Scatter distribution as a function of redshift, violin plot</p>
+
+<pre lang="r,fig.width=12,"><code>plotDiagPhotoZ(photoz, specz, type = "errorviolins")
+</code></pre>
+
+<p>Scatter distribution as a function of redshift, box plot</p>
+
+<pre lang="r,fig.width=12,"><code>plotDiagPhotoZ(photoz, specz, type = "box")
+</code></pre>
+
+<pre lang="r,"><code>shinyAppDir("paste(find.package("CosmoPhotoz"),"/glmPhotoZ-2/",sep=""))
+</code></pre>
       </section>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/RafaelSdeSouza">RafaelSdeSouza</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Cosmophotoz maintained by <a href="https://github.com/RafaelSdeSouza">RafaelSdeSouza</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
     
+
   </body>
 </html>
